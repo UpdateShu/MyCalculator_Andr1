@@ -1,16 +1,20 @@
 package com.example.mycalculatorandr1.ui;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class EditValuePresenter {
-    private CalculatorView view;
 
-    public EditValuePresenter(CalculatorView view) {
+    private CalculatorView view;
+    private int maxLength;
+
+    public EditValuePresenter(CalculatorView view, int maxLength) {
         this.view = view;
+        this.maxLength = maxLength;
         reset();
     }
 
-    private String getStrValue() {
+    public String getStrValue() {
         return view.getEditValue();
     }
 
@@ -63,7 +67,7 @@ public class EditValuePresenter {
         }
     }
 
-    private int getIntValue() {
+    public int getIntValue() {
         if (isDec()) {
             return Integer.parseInt(getStrValue().substring(0, getDotIndex()));
         } else {
@@ -71,12 +75,13 @@ public class EditValuePresenter {
         }
     }
 
-    private BigDecimal getDecValue() {
+    public BigDecimal getDecValue() {
         String decAfterDot = getStrValue().substring(getDotIndex() + 1);
-        BigDecimal currentBd = new BigDecimal(Integer.parseInt(decAfterDot));
-        for (int i = 0; i < decAfterDot.length(); i++) {
-            currentBd.divide(BigDecimal.TEN);
+        BigDecimal decVal = new BigDecimal(decAfterDot);
+        int length = Math.min(decAfterDot.length(), maxLength - 2);
+        for (int i = 0; i < length; i++) {
+            decVal = decVal.divide(BigDecimal.TEN, maxLength, RoundingMode.HALF_UP);
         }
-        return currentBd;
+        return decVal;
     }
 }
