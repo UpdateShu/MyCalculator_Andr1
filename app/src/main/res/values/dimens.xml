@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btnTextSize">30sp</dimen>
+    <dimen name="btnTextSizeLand">26sp</dimen>
+    <dimen name="btnMargin">5dp</dimen>
+    <dimen name="screenHeight">200dp</dimen>
+    <dimen name="screenHeightLand">100dp</dimen>
+    <dimen name="screenMargin">20dp</dimen>
+    <dimen name="screenMarginLand">30dp</dimen>
+</resources>

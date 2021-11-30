@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,15 +19,46 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     private CalculatorPresenter presenter;
 
-    private TextView txtResult;
+    private TextView txtInput, txtInfo;
+    private int maxEditLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
 
-        txtResult = findViewById(R.id.input);
-        presenter = new CalculatorPresenter(this, new CalculatorImpl());
+        txtInput = findViewById(R.id.input);
+        txtInfo = findViewById(R.id.info);
+        maxEditLength = 12;
+
+        presenter = new CalculatorPresenter(this, new CalculatorImpl(), maxEditLength);
+
+        findViewById(R.id.key_dec).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onDotPressed();
+            }
+        });
+        initDigits();
+        initOperands();
+
+        findViewById(R.id.key_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onBackPressed();
+            }
+        });
+
+        logLifecycle("onCreate");
+        if (savedInstanceState == null) {
+            logLifecycle("onCreate first");
+        }
+        else {
+            logLifecycle("onCreate recreate");
+        }
+    }
+
+    private void initDigits() {
 
         HashMap<Integer, Integer> digits = new HashMap<>();
         digits.put(R.id.key_0, 0);
@@ -43,13 +75,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         View.OnClickListener digitClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    presenter.OnDigitPressed(digits.get(v.getId()));
-                }
-                catch (Exception ex)
-                {
-                    logLifecycle(ex.toString());
-                }
+                presenter.OnDigitPressed(digits.get(v.getId()));
             }
         };
         findViewById(R.id.key_0).setOnClickListener(digitClickListener);
@@ -62,13 +88,9 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         findViewById(R.id.key_7).setOnClickListener(digitClickListener);
         findViewById(R.id.key_8).setOnClickListener(digitClickListener);
         findViewById(R.id.key_9).setOnClickListener(digitClickListener);
+    }
 
-        findViewById(R.id.key_dec).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onDotPressed();
-            }
-        });
+    private void initOperands() {
 
         HashMap<Integer, Operation> operands = new HashMap<>();
         operands.put(R.id.key_plus, Operation.PLUS);
@@ -79,10 +101,9 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         View.OnClickListener operandClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onOperandPressedPressed(operands.get(v.getId()));
+                presenter.onOperandPressed(operands.get(v.getId()));
             }
         };
-
         findViewById(R.id.key_multy).setOnClickListener(operandClickListener);
         findViewById(R.id.key_plus).setOnClickListener(operandClickListener);
         findViewById(R.id.key_minus).setOnClickListener(operandClickListener);
@@ -92,12 +113,49 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     @Override
     public String getEditValue() {
-        return txtResult.getText().toString();
+        return txtInput.getText().toString();
     }
 
     @Override
-    public void setEditValue(String value) {
-        txtResult.setText(value != null ? value : "0");
+    public void setEditValue(String strVal) {
+        String formatValue = strVal != null
+                ? (strVal.length() <= maxEditLength ? strVal : strVal.substring(0, maxEditLength)) : "0";
+        txtInput.setText(formatValue);
+    }
+
+    @Override
+    public void setInfo(String info) {
+        txtInfo.setText(info);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        logLifecycle("onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        logLifecycle("onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logLifecycle("onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        logLifecycle("onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logLifecycle("onDestroy");
     }
 
     private void logLifecycle(String toLog) {

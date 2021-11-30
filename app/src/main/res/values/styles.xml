@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="CalcStyle" parent="Theme.CalcTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+    </style>
+
+    <style name="CalcPanelStyle" parent="CalcStyle">
+        <item name="android:textSize">@dimen/btnTextSize</item>
+        <item name="android:layout_margin">@dimen/btnMargin</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="CalcKeyStyle" parent="CalcPanelStyle">
+        <item name="android:textColor">@color/keyColor</item>
+        <item name="cornerRadius">30dp</item>
+    </style>
+
+    <style name="CalcManagerStyle" parent="CalcPanelStyle">
+        <item name="android:backgroundTint">@android:color/holo_orange_dark</item>
+    </style>
+
+    <style name="CalcPanelStyleLand" parent="CalcKeyStyle">
+        <item name="android:textSize">@dimen/btnTextSizeLand</item>
+        <item name="cornerRadius">80dp</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="CalcKeyStyleLand" parent="CalcPanelStyleLand">
+        <item name="android:textColor">@color/keyColor</item>
+        <item name="cornerRadius">15dp</item>
+    </style>
+
+    <style name="CalcManagerStyleLand" parent="CalcPanelStyleLand">
+        <item name="android:backgroundTint">@android:color/holo_orange_dark</item>
+    </style>
+
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">#e91e63</item>
+        <item name="colorPrimaryDark">#b0003a</item>
+        <item name="colorAccent">#ff6090</item>
+    </style>
+
+    <style name="AppThemeDark" parent="Theme.MaterialComponents">
+    </style>
+
+</resources>

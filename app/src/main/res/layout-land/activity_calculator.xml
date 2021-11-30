@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+tools:context=".ui.CalculatorActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/screenHeightLand"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="@dimen/screenMarginLand"
+        android:layout_marginEnd="@dimen/screenMarginLand"
+        android:layout_marginBottom="5dp"
+        android:alpha="0.9"
+        android:background="@android:color/background_light">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_orange_light"
+                android:alpha="0.9"
+                android:gravity="center|end"
+                android:hint="56789"
+                android:text="12345"
+                android:textSize="50sp"></com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="12345"
+            android:textAlignment="viewEnd">
+        </EditText>
+    </FrameLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/CalcPanelStyleLand"
+        android:alpha="0.95"
+        android:columnCount="4"
+        android:minHeight="300dp"
+        android:paddingStart="@dimen/screenMarginLand"
+        android:paddingEnd="@dimen/screenMarginLand">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_1"
+            android:text="@string/key_1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/key_2"
+            style="@style/CalcKeyStyleLand"
+
+            android:text="@string/key_2" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_3"
+            android:text="@string/key_3"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_back"
+            android:text="@string/key_back"
+            android:textSize="24sp" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_4"
+            android:text="@string/key_4"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_5"
+            android:text="@string/key_5"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_6"
+            android:text="@string/key_6"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_plus"
+            android:text="@string/key_plus"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_7"
+            android:text="@string/key_7"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_8"
+            android:text="@string/key_8"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_9"
+            android:text="@string/key_9"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_minus"
+            android:text="@string/key_minus"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_dec"
+            android:text="@string/key_dес"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcKeyStyleLand"
+            android:id="@+id/key_0"
+            android:text="@string/key_0"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_div"
+            android:text="@string/key_div"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_multy"
+            android:text="@string/key_multi"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_C"
+            android:text="@string/key_clear"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_sign"
+            android:text="@string/key_sign"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/CalcManagerStyleLand"
+            android:id="@+id/key_equal"
+            android:layout_columnSpan="2"
+            android:text="@string/key_equal"/>
+
+    </GridLayout>
+
+</LinearLayout>
+</FrameLayout>
