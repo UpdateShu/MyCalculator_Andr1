@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/white"
-tools:context=".ui.CalculatorActivity">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.calc.CalculatorActivity">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -15,10 +16,10 @@ tools:context=".ui.CalculatorActivity">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/screenHeightLand"
-        android:layout_marginTop="15dp"
         android:layout_marginStart="@dimen/screenMarginLand"
         android:layout_marginEnd="@dimen/screenMarginLand"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="@dimen/screenMarginLandTop"
+        android:layout_marginBottom="@dimen/screenMarginLandBottom"
         android:alpha="0.9"
         android:background="@android:color/background_light">
 
@@ -30,42 +31,30 @@ tools:context=".ui.CalculatorActivity">
                 android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/holo_orange_light"
                 android:alpha="0.9"
                 android:gravity="center|end"
-                android:hint="56789"
-                android:text="12345"
                 android:textSize="50sp"></com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="12345"
-            android:textAlignment="viewEnd">
-        </EditText>
     </FrameLayout>
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/CalcPanelStyleLand"
+        android:theme="@style/CalcStyle"
         android:alpha="0.95"
         android:columnCount="4"
-        android:minHeight="300dp"
         android:paddingStart="@dimen/screenMarginLand"
-        android:paddingEnd="@dimen/screenMarginLand">
+        android:paddingEnd="@dimen/screenMarginLand"
+        android:paddingBottom="@dimen/panelPaddingBottomLand">
 
         <com.google.android.material.button.MaterialButton
             style="@style/CalcKeyStyleLand"
             android:id="@+id/key_1"
-            android:text="@string/key_1" />
+            android:text="@string/key_1"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/key_2"
             style="@style/CalcKeyStyleLand"
-
             android:text="@string/key_2" />
 
         <com.google.android.material.button.MaterialButton
@@ -77,7 +66,7 @@ tools:context=".ui.CalculatorActivity">
             style="@style/CalcManagerStyleLand"
             android:id="@+id/key_back"
             android:text="@string/key_back"
-            android:textSize="24sp" />
+            android:textSize="@dimen/btnTextSizeSmall" />
 
         <com.google.android.material.button.MaterialButton
             style="@style/CalcKeyStyleLand"
@@ -137,7 +126,7 @@ tools:context=".ui.CalculatorActivity">
         <com.google.android.material.button.MaterialButton
             style="@style/CalcManagerStyleLand"
             android:id="@+id/key_multy"
-            android:text="@string/key_multi"/>
+            android:text="@string/key_multy"/>
 
         <com.google.android.material.button.MaterialButton
             style="@style/CalcManagerStyleLand"
@@ -156,6 +145,20 @@ tools:context=".ui.CalculatorActivity">
             android:text="@string/key_equal"/>
 
     </GridLayout>
-
 </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/choose_theme"
+        android:theme="@style/CalcStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginStart="@dimen/screenMargin"
+        android:layout_marginTop="@dimen/screenMarginLandTop"
+        android:layout_marginEnd="@dimen/screenMargin"
+        android:layout_marginBottom="@dimen/screenMarginLandBottom"
+        android:text="@string/SelectTheme"
+        android:textSize="@dimen/btnTextSizeSmall">
+    </com.google.android.material.button.MaterialButton>
+
 </FrameLayout>

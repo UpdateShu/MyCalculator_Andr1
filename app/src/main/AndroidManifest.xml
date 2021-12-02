@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mycalculatorandr1" >
+    package="com.example.mycalculatorandr1">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalcTheme">
         <activity
-            android:name=".ui.CalculatorActivity"
+            android:name=".ui.theme.SelectThemeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.calc.CalculatorActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
