@@ -1,4 +1,4 @@
-package com.example.mycalculatorandr1.ui;
+package com.example.mycalculatorandr1.ui.calc;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

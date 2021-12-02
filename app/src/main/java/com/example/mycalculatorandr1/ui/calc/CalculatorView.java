@@ -1,8 +1,7 @@
-package com.example.mycalculatorandr1.ui;
+package com.example.mycalculatorandr1.ui.calc;
 
 public interface CalculatorView {
 
     String getEditValue();
     void setEditValue(String value);
-    void setInfo(String info);
 }
