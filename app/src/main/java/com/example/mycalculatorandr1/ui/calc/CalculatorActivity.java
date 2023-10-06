@@ -57,8 +57,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         txtInput = findViewById(R.id.input);
         maxEditLength = 12;
 
-        presenter = new CalculatorPresenter(this, new CalculatorImpl());
-        presenter.init(maxEditLength);
+        presenter = new CalculatorPresenter(this, new CalculatorImpl(), maxEditLength);
         if (savedInstanceState != null) {
             presenter.restoreState(savedInstanceState);
         }

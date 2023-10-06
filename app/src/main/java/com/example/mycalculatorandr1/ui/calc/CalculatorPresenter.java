@@ -1,11 +1,10 @@
 package com.example.mycalculatorandr1.ui.calc;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.Bundle;
 
 import com.example.mycalculatorandr1.domain.Calculator;
 import com.example.mycalculatorandr1.domain.Operation;
+import com.example.mycalculatorandr1.domain.State;
 
 import java.math.BigDecimal;
 
@@ -15,19 +14,20 @@ public class CalculatorPresenter {
 
     private CalculatorView view;
     private Calculator calculator;
-    private EditValuePresenter editPresenter;
+
+    public EditValuePresenter getEditPresenter() { return _editPresenter; }
+    private EditValuePresenter _editPresenter;
 
     private BigDecimal prevArg = null;
     private BigDecimal currentArg = new BigDecimal(0);
     private Operation prevOperation = null;
 
-    public CalculatorPresenter(CalculatorView view, Calculator calculator) {
+    public CalculatorPresenter(
+            CalculatorView view, Calculator calculator, int maxEditLength) {
         this.view = view;
         this.calculator = calculator;
-    }
 
-    public void init(int maxEditLength) {
-        editPresenter = new EditValuePresenter(view, maxEditLength);
+        _editPresenter = new EditValuePresenter(view, maxEditLength);
     }
 
     public void onSaveState(Bundle bundle) {
@@ -37,8 +37,8 @@ public class CalculatorPresenter {
     public void restoreState(Bundle bundle) {
         State state = bundle.getParcelable(KEY_STATE);
 
-        prevArg = state.prevArg;
-        currentArg = state.currentArg;
+        prevArg = state.getPrevArg();
+        currentArg = state.getCurrentArg();
         if (currentArg != null) {
             view.setEditValue(currentArg.toString());
         }
@@ -51,134 +51,49 @@ public class CalculatorPresenter {
                 view.setEditValue(str.substring(0, str.length() - 1));
             }
             else {
-                editPresenter.reset();
+                _editPresenter.reset();
                 currentArg = null;
             }
         }
     }
 
-    public void onDotPressed() {
-        if (currentArg == null) {
-            editPresenter.reset();
-        }
-        editPresenter.setDot();
-        currentArg = editPresenter.getEditValue();
+    public Boolean test() {
+        return true;
     }
 
-    public void OnDigitPressed(Integer digit) {
+    public void onDotPressed() {
+        //if (currentArg == null) {
+            _editPresenter.reset();
+        /*}
+        _editPresenter.setDot();
+        currentArg = _editPresenter.getEditValue();*/
+    }
+
+    public void OnDigitPressed(int digit) {
         //if (editPresenter.isDec())
             //view.setInfo(editPresenter.getStrValue());
         if (currentArg == null) {
-            editPresenter.reset();
+            _editPresenter.reset();
         }
-        editPresenter.setDigit(digit);
-        currentArg = editPresenter.getEditValue();
+        _editPresenter.setDigit(digit);
+        currentArg = _editPresenter.getEditValue();
     }
 
     public void onOperandPressed(Operation operation) {
         if (prevArg != null) {
             if (currentArg != null) {
-                currentArg = editPresenter.getEditValue();
+                currentArg = _editPresenter.getEditValue();
                 double result = calculator.performOperation(prevArg.doubleValue(), currentArg.doubleValue(), prevOperation);
 
                 view.setEditValue((new BigDecimal(result)).toString());
-                prevArg = editPresenter.getEditValue();
+                prevArg = _editPresenter.getEditValue();
                 currentArg = null;
             }
         }
         else {
-            prevArg = editPresenter.getEditValue();
+            prevArg = _editPresenter.getEditValue();
             currentArg = null;
         }
         prevOperation = operation;
-    }
-
-    static class State implements Parcelable {
-        public static final Creator<State> CREATOR = new Creator<State>() {
-            @Override
-            public State createFromParcel(Parcel in) {
-                return new State(in);
-            }
-
-            @Override
-            public State[] newArray(int size) {
-                return new State[size];
-            }
-        };
-
-        protected State(Parcel in) {
-            if (in.readByte() == 0) {
-                prevArg = null;
-            } else {
-                prevArg = new BigDecimal(in.readDouble());
-            }
-            if (in.readByte() == 0) {
-                currentArg = null;
-            } else {
-                currentArg = new BigDecimal(in.readDouble());
-            }
-            if (in.readByte() == 0) {
-                prevOperation = null;
-            } else {
-                prevOperation = Operation.EQUAL;
-                for (Operation op: Operation.values()) {
-                    if (op.getCode() == in.readInt()) {
-                        prevOperation = op;
-                    }
-                }
-            }
-        }
-
-        protected State(BigDecimal prevArg, BigDecimal currentArg, Operation prevOperation) {
-            this.prevArg = prevArg;
-            this.currentArg = currentArg;
-            this.prevOperation = prevOperation;
-        }
-
-        BigDecimal prevArg = null;
-        BigDecimal currentArg = new BigDecimal(0);
-        Operation prevOperation = null;
-
-        public BigDecimal getPrevArg() {
-            return prevArg;
-        }
-
-        public BigDecimal getCurrentArg() {
-            return currentArg;
-        }
-
-        public Operation getPrevOperation() {
-            return prevOperation;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            if (prevArg == null) {
-                dest.writeByte((byte)0);
-            }
-            else {
-                dest.writeByte((byte)1);
-                dest.writeDouble(prevArg.doubleValue());
-            }
-            if (currentArg == null) {
-                dest.writeByte((byte)0);
-            }
-            else {
-                dest.writeByte((byte)1);
-                dest.writeDouble(currentArg.doubleValue());
-            }
-            if (prevOperation == null) {
-                dest.writeByte((byte)0);
-            }
-            else  {
-                dest.writeByte((byte)1);
-                dest.writeInt(prevOperation.getCode());
-            }
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
     }
 }
