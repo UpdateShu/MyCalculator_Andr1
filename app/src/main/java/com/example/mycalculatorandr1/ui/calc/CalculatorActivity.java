@@ -119,7 +119,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         View.OnClickListener digitClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.OnDigitPressed(digits.get(v.getId()));
+                presenter.onDigitPressed(digits.get(v.getId()));
             }
         };
         findViewById(R.id.key_0).setOnClickListener(digitClickListener);
@@ -157,14 +157,15 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     @Override
     public String getEditValue() {
-        return txtInput.getText().toString();
+        CharSequence text = txtInput.getText();
+        return text != null ? text.toString() : "0";
     }
 
     @Override
     public void setEditValue(String strVal) {
-        String formatValue = strVal != null
+        String txt = strVal != null
                 ? (strVal.length() <= maxEditLength ? strVal : strVal.substring(0, maxEditLength)) : "0";
-        txtInput.setText(formatValue);
+        txtInput.setText(txt);
     }
 
     @Override

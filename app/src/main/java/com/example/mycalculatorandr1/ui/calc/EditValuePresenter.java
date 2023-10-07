@@ -14,52 +14,52 @@ public class EditValuePresenter {
         reset();
     }
 
+    private String _strValue = "0";
     public String getStrValue() {
-        return view.getEditValue();
+        return _strValue;
+    }
+
+    public void setStrValue(String strValue) {
+        view.setEditValue(strValue);
+        _strValue = strValue;
     }
 
     private int getDotIndex() {
-        return getStrValue().indexOf('.');
+        String str = getStrValue();
+        return str != null ? str.indexOf('.') : -1;
     }
 
     public boolean isDec() {
         return getDotIndex() != -1;
     }
 
-    public void reset() {
-        view.setEditValue("0");
-    }
+    public void reset() { setStrValue("0"); }
 
     public void setDot() {
         if (!isDec()) {
-            view.setEditValue(view.getEditValue() + ".0");
+            setStrValue(getStrValue() + ".0");
         }
     }
 
     public void setDigit(int digit) {
-        String strVal = view.getEditValue();
-        if (strVal.equals("0")) {
-            view.setEditValue(Integer.toString(digit));
+        String strVal = getStrValue();
+        if (strVal == null || strVal == "" || strVal.equals("0")) {
+            setStrValue(Integer.toString(digit));
         }
         else {
             if (isDec()) {
-                BigDecimal decVal = getDecValue();
-                if (decVal.equals(BigDecimal.ZERO)) {
-                    view.setEditValue(getIntValue() + "." + Integer.toString(digit));
-                }
-                else {
-                    view.setEditValue(view.getEditValue() + Integer.toString(digit));
-                }
+                setStrValue(getIntValue() + "." + digit);
             }
             else {
-                view.setEditValue(view.getEditValue() + Integer.toString(digit));
+                setStrValue(getStrValue() + digit);
             }
         }
     }
 
     public BigDecimal getEditValue() {
         if (!isDec()) {
-            return new BigDecimal(Integer.parseInt(getStrValue()));
+            String str = getStrValue();
+            return new BigDecimal(Integer.parseInt(str != null && str != "" ? str : "0"));
         }
         else {
             BigDecimal decValue = getDecValue();

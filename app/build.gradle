@@ -26,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.example.mycalculatorandr1'
 }
 
 dependencies {
@@ -38,10 +39,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //Mockito
-    testImplementation "org.mockito:mockito-core:2.19.0"
-    testImplementation 'org.mockito:mockito-inline:2.8.9'
-    testImplementation('com.nhaarman:mockito-kotlin:1.5.0') {
-        exclude group: 'org.jetbrains.kotlin'
-        exclude group: 'org.mockito'
-    }
+    testImplementation "org.mockito:mockito-core:3.4.6"
 }

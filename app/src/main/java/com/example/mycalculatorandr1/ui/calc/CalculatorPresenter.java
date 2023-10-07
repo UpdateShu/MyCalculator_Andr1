@@ -15,11 +15,14 @@ public class CalculatorPresenter {
     private CalculatorView view;
     private Calculator calculator;
 
-    public EditValuePresenter getEditPresenter() { return _editPresenter; }
-    private EditValuePresenter _editPresenter;
+    private EditValuePresenter editPresenter;
 
     private BigDecimal prevArg = null;
     private BigDecimal currentArg = new BigDecimal(0);
+    public BigDecimal getCurrentArg() {
+        return currentArg;
+    }
+
     private Operation prevOperation = null;
 
     public CalculatorPresenter(
@@ -27,7 +30,7 @@ public class CalculatorPresenter {
         this.view = view;
         this.calculator = calculator;
 
-        _editPresenter = new EditValuePresenter(view, maxEditLength);
+        editPresenter = new EditValuePresenter(view, maxEditLength);
     }
 
     public void onSaveState(Bundle bundle) {
@@ -40,58 +43,57 @@ public class CalculatorPresenter {
         prevArg = state.getPrevArg();
         currentArg = state.getCurrentArg();
         if (currentArg != null) {
-            view.setEditValue(currentArg.toString());
+            setEditValue(currentArg.toString());
         }
+    }
+
+    private void setEditValue(String editValue) {
+        view.setEditValue(editValue);
     }
 
     public void onBackPressed() {
         String str = view.getEditValue();
         if (!str.equals("0")) {
             if (str.length() != 1) {
-                view.setEditValue(str.substring(0, str.length() - 1));
+                setEditValue(str.substring(0, str.length() - 1));
             }
             else {
-                _editPresenter.reset();
+                editPresenter.reset();
                 currentArg = null;
             }
         }
     }
 
-    public Boolean test() {
-        return true;
+    public BigDecimal onDigitPressed(int digit) {
+        if (currentArg == null) {
+            editPresenter.reset();
+        }
+        editPresenter.setDigit(digit);
+        currentArg = editPresenter.getEditValue();
+        return currentArg;
     }
 
     public void onDotPressed() {
-        //if (currentArg == null) {
-            _editPresenter.reset();
-        /*}
-        _editPresenter.setDot();
-        currentArg = _editPresenter.getEditValue();*/
-    }
-
-    public void OnDigitPressed(int digit) {
-        //if (editPresenter.isDec())
-            //view.setInfo(editPresenter.getStrValue());
         if (currentArg == null) {
-            _editPresenter.reset();
+            editPresenter.reset();
         }
-        _editPresenter.setDigit(digit);
-        currentArg = _editPresenter.getEditValue();
+        editPresenter.setDot();
+        currentArg = editPresenter.getEditValue();
     }
 
     public void onOperandPressed(Operation operation) {
         if (prevArg != null) {
             if (currentArg != null) {
-                currentArg = _editPresenter.getEditValue();
+                currentArg = editPresenter.getEditValue();
                 double result = calculator.performOperation(prevArg.doubleValue(), currentArg.doubleValue(), prevOperation);
 
                 view.setEditValue((new BigDecimal(result)).toString());
-                prevArg = _editPresenter.getEditValue();
+                prevArg = editPresenter.getEditValue();
                 currentArg = null;
             }
         }
         else {
-            prevArg = _editPresenter.getEditValue();
+            prevArg = editPresenter.getEditValue();
             currentArg = null;
         }
         prevOperation = operation;
