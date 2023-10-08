@@ -15,7 +15,10 @@ public class CalculatorPresenter {
     private CalculatorView view;
     private Calculator calculator;
 
-    private EditValuePresenter editPresenter;
+    public EditValuePresenter editPresenter;
+    public String getEditStr() {
+        return editPresenter.getStrValue();
+    }
 
     private BigDecimal prevArg = null;
     private BigDecimal currentArg = new BigDecimal(0);
@@ -43,19 +46,17 @@ public class CalculatorPresenter {
         prevArg = state.getPrevArg();
         currentArg = state.getCurrentArg();
         if (currentArg != null) {
-            setEditValue(currentArg.toString());
+            editPresenter.setStrValue(currentArg.toString());
         }
-    }
-
-    private void setEditValue(String editValue) {
-        view.setEditValue(editValue);
     }
 
     public void onBackPressed() {
         String str = view.getEditValue();
         if (!str.equals("0")) {
-            if (str.length() != 1) {
-                setEditValue(str.substring(0, str.length() - 1));
+            if (str.length() != 1)
+            {
+                editPresenter.setStrValue(str.substring(0, str.length() - 1));
+                currentArg = editPresenter.getEditValue();
             }
             else {
                 editPresenter.reset();
@@ -64,13 +65,12 @@ public class CalculatorPresenter {
         }
     }
 
-    public BigDecimal onDigitPressed(int digit) {
+    public void onDigitPressed(int digit) {
         if (currentArg == null) {
             editPresenter.reset();
         }
         editPresenter.setDigit(digit);
         currentArg = editPresenter.getEditValue();
-        return currentArg;
     }
 
     public void onDotPressed() {
@@ -87,7 +87,7 @@ public class CalculatorPresenter {
                 currentArg = editPresenter.getEditValue();
                 double result = calculator.performOperation(prevArg.doubleValue(), currentArg.doubleValue(), prevOperation);
 
-                view.setEditValue((new BigDecimal(result)).toString());
+                editPresenter.setStrValue((new BigDecimal(result)).toString());
                 prevArg = editPresenter.getEditValue();
                 currentArg = null;
             }
