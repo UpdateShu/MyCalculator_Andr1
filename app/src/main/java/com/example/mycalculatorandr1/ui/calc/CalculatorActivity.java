@@ -1,37 +1,66 @@
-package com.example.mycalculatorandr1.ui;
+package com.example.mycalculatorandr1.ui.calc;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mycalculatorandr1.R;
 import com.example.mycalculatorandr1.domain.CalculatorImpl;
 import com.example.mycalculatorandr1.domain.Operation;
+import com.example.mycalculatorandr1.domain.Theme;
+import com.example.mycalculatorandr1.storage.ThemeStorage;
+import com.example.mycalculatorandr1.ui.theme.SelectThemeActivity;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.HashMap;
 
 public class CalculatorActivity extends AppCompatActivity implements CalculatorView {
 
-    private CalculatorPresenter presenter;
+    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                       Theme theme = (Theme)result.getData().getSerializableExtra(SelectThemeActivity.EXTRA_THEME);
 
-    private TextView txtInput, txtInfo;
+                       storage.saveTheme(theme);
+                       recreate();
+                    }
+                }
+            });
+
+    private CalculatorPresenter presenter;
+    private ThemeStorage storage;
+
+    private TextView txtInput;
     private int maxEditLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
 
+        storage = new ThemeStorage(this);
+        setTheme(storage.getSavedTheme().getTheme());
+
+        setContentView(R.layout.activity_calculator);
         txtInput = findViewById(R.id.input);
-        txtInfo = findViewById(R.id.info);
         maxEditLength = 12;
 
         presenter = new CalculatorPresenter(this, new CalculatorImpl(), maxEditLength);
+        if (savedInstanceState != null) {
+            presenter.restoreState(savedInstanceState);
+        }
 
         findViewById(R.id.key_dec).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +78,15 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
             }
         });
 
+        findViewById(R.id.choose_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CalculatorActivity.this, SelectThemeActivity.class);
+                intent.putExtra(SelectThemeActivity.EXTRA_THEME, storage.getSavedTheme());
+                launcher.launch(intent);
+            }
+        });
+
         logLifecycle("onCreate");
         if (savedInstanceState == null) {
             logLifecycle("onCreate first");
@@ -56,6 +94,12 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         else {
             logLifecycle("onCreate recreate");
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        presenter.onSaveState(outState);
     }
 
     private void initDigits() {
@@ -75,7 +119,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         View.OnClickListener digitClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.OnDigitPressed(digits.get(v.getId()));
+                presenter.onDigitPressed(digits.get(v.getId()));
             }
         };
         findViewById(R.id.key_0).setOnClickListener(digitClickListener);
@@ -113,19 +157,15 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     @Override
     public String getEditValue() {
-        return txtInput.getText().toString();
+        CharSequence text = txtInput.getText();
+        return text != null ? text.toString() : "0";
     }
 
     @Override
     public void setEditValue(String strVal) {
-        String formatValue = strVal != null
+        String txt = strVal != null
                 ? (strVal.length() <= maxEditLength ? strVal : strVal.substring(0, maxEditLength)) : "0";
-        txtInput.setText(formatValue);
-    }
-
-    @Override
-    public void setInfo(String info) {
-        txtInfo.setText(info);
+        txtInput.setText(txt);
     }
 
     @Override
@@ -161,4 +201,5 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     private void logLifecycle(String toLog) {
         Log.d("logLifecycle", toLog);
     }
+
 }

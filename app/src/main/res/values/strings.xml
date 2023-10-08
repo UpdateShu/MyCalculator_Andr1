@@ -13,10 +13,14 @@
     <string name="key_sign">+/-</string>
     <string name="key_plus">+</string>
     <string name="key_minus">-</string>
-    <string name="key_multi">*</string>
+    <string name="key_multy">*</string>
     <string name="key_div">/</string>
     <string name="key_equal">=</string>
     <string name="key_dес">.</string>
     <string name="key_back">Back</string>
     <string name="key_clear">C</string>
+    <string name="SelectTheme">Выбор темы</string>
+    <string name="Default_Theme">По умолчанию</string>
+    <string name="Orange_Theme">Оранжевый</string>
+    <string name="Purple_Theme">Фиолетовый</string>
 </resources>
